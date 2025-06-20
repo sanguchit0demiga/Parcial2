@@ -19,32 +19,35 @@ public class Player : MonoBehaviour
         }
 
         // interactua con un objeto cercano al presionar E
+        
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (closest != null)
+            ClosestObject(); //tmb llama al ClosestObject para asegurarse de que el objeto mas cercano se actualice antes de interactuar
+            if (closest != null) //verifica si hay un objeto cercano para interactar y luego llama al metodo o no
             {
-                closest.Interact(); //esto seria polimorfismo xq llamo al metodo sin importar si es un trap, enemy o door
+                closest.Interact();
             }
             else
             {
                 Debug.Log("no hay objetos cercanos para interactuar");
             }
         }
+    }
 
         void ClosestObject()
         {
 
             //aca se obtuenen todos los objetos que heredan de templeobjects
-            TempleObjects[] objects = FindObjectsOfType<TempleObjects>();
-            float menorDistancia = Mathf.Infinity;
-            closest = null;
+            TempleObjects[] objects = Object.FindObjectsByType<TempleObjects>(FindObjectsSortMode.None);
+            float menorDistancia = Mathf.Infinity; 
+            closest = null; 
 
 
             //se recorre el array de objetos y se calcula la distancia al jugador y el mas cercano
             foreach (TempleObjects obj in objects) {
-                float distance = Vector2.Distance(transform.position, obj.transform.position);
-                if (distance < menorDistancia && distance <= interactionRange)
-                {
+                float distance = Vector2.Distance(transform.position, obj.transform.position); //calcula la distancia entre el jugador y el objeto
+            if (distance < menorDistancia && distance <= interactionRange) //verifica si la distancia es menor a la menor distancia encontrada y si esta dentro del rango de interaccion
+            {
                     menorDistancia = distance;
                     closest = obj;
                 }
@@ -59,5 +62,5 @@ public class Player : MonoBehaviour
             }
         }
     }
-}
+
 
